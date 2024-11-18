@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/myprofile', protectRoute ,myProfile)
 
-router.get('/signup', signupController)
+router.post('/signup', signupController)
 
 router.post('/login', loginController)
 

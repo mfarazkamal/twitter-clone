@@ -11,7 +11,7 @@ export const signupController = async (req, res) => {
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            return res.status(400).json({ error: "Please provide a valid email address" })
+            return res.status(400).json({ message: "Please provide a valid email address" })
         }
 
         const userExist = await User.findOne({ username });
@@ -31,7 +31,7 @@ export const signupController = async (req, res) => {
             })
         }
         if (password.length < 8) {
-            return res.status(400).json({ error: "Password must be at least 8 characters" })
+            return res.status(400).json({ message: "Password must be at least 8 characters" })
         }
 
         // PASSWORD HASHING
@@ -62,11 +62,11 @@ export const signupController = async (req, res) => {
                 coverImg: newUser.coverImg
             })
         } else {
-            res.status(400).json({ error: "Invalid data" })
+            res.status(400).json({ message: "Invalid data" })
         }
 
     } catch (error) {
-        res.status(500).json({ error: "Internal server error" })
+        res.status(500).json({ message: "Internal server error" })
         console.log(`Error: ${error.message}`);
 
     }

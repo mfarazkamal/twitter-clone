@@ -11,6 +11,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { IoCalendarOutline } from "react-icons/io5";
 import { FaLink } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import { useQuery } from "@tanstack/react-query";
 
 const ProfilePage = () => {
 	const [coverImg, setCoverImg] = useState(null);
@@ -23,16 +24,18 @@ const ProfilePage = () => {
 	const isLoading = false;
 	const isMyProfile = true;
 
+	const {data:authUser} = useQuery({queryKey: ["authUser"]})
+
 	const user = {
 		_id: "1",
-		fullName: "John Doe",
-		username: "johndoe",
+		fullName: authUser.fullName,
+		username: authUser.username,
 		profileImg: "/avatars/boy2.png",
 		coverImg: "/cover.png",
-		bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+		bio: authUser.bio,
 		link: "https://youtube.com/@asaprogrammer_",
-		following: ["1", "2", "3"],
-		followers: ["1", "2", "3"],
+		following: authUser.following,
+		followers: authUser.followers,
 	};
 
 	const handleImgChange = (e, state) => {
@@ -158,7 +161,7 @@ const ProfilePage = () => {
 								</div>
 								<div className='flex gap-2'>
 									<div className='flex gap-1 items-center'>
-										<span className='font-bold text-xs'>{user?.following.length}</span>
+										<span className='font-bold text-xs'>{authUser?.following.length}</span>
 										<span className='text-slate-500 text-xs'>Following</span>
 									</div>
 									<div className='flex gap-1 items-center'>
