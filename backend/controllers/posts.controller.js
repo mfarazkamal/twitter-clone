@@ -17,8 +17,17 @@ export const createPostController = async (req, res)=>{
 
 
         if(postImage){
-            const uploadImage  = await cloudinary.uploader.upload(postImage)
-            postImage = uploadImage.secure_url
+            try{
+                const uploadImage  = await cloudinary.uploader.upload(postImage, {
+                    folder: "posts",
+                    resource_type: "image",
+                    
+                })
+                postImage = uploadImage.secure_url;
+            }catch(uploadError){
+                console.error("Cloudinary Upload Error: ", uploadError);
+                return res.status(500).json({message: "Error uploading image"});
+            }
         }
 
         const newPost = new Post({

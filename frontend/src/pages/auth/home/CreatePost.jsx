@@ -7,20 +7,21 @@ import toast from "react-hot-toast";
 
 const CreatePost = () => {
 	const [text, setText] = useState("");
-	const [img, setImg] = useState(null);
+	const [postImage, setPostImage] = useState(null);
+	const imgRef = useRef(null);
 
 	const {data:authUser} = useQuery({ queryKey: ["authUser"] });
 	const queryClient = useQueryClient();
 
-	const { mutate:CreatePost, isPending, isError, error} = useMutation({
-		mutationFn: async ({ text, img }) => {
+	const { mutate:createPost, isPending, isError, error} = useMutation({
+		mutationFn: async ({ text, postImage }) => {
 			try {
 				const res = await fetch("/api/posts/create", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ text, img }),
+					body: JSON.stringify({ text, postImage }),
 				})
 
 				const data = await res.json();
@@ -35,24 +36,21 @@ const CreatePost = () => {
 		},
 		onSuccess: () => {
 			setText("");
-			setImg(null);
+			setPostImage(null);
 			toast.success("Post created successfully");
 			queryClient.invalidateQueries({ queryKey: ["posts"] });
 		}
 	})
 
-	const imgRef = useRef(null);
 
-	// const isPending = false;
-	// const isError = false;
 
-	const data = {
-		profileImg: "/avatars/boy1.png",
-	};
+	// const data = {
+	// 	profileImg: "/avatars/boy1.png",
+	// };
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		CreatePost({ text, img });
+		createPost({ text, postImage });
 	};
 
 	const handleImgChange = (e) => {
@@ -60,7 +58,7 @@ const CreatePost = () => {
 		if (file) {
 			const reader = new FileReader();
 			reader.onload = () => {
-				setImg(reader.result);
+				setPostImage(reader.result);
 			};
 			reader.readAsDataURL(file);
 		}
@@ -80,16 +78,16 @@ const CreatePost = () => {
 					value={text}
 					onChange={(e) => setText(e.target.value)}
 				/>
-				{img && (
+				{postImage && (
 					<div className='relative w-72 mx-auto'>
 						<IoCloseSharp
 							className='absolute top-0 right-0 text-white bg-gray-800 rounded-full w-5 h-5 cursor-pointer'
 							onClick={() => {
-								setImg(null);
+								setPostImage(null);
 								imgRef.current.value = null;
 							}}
 						/>
-						<img src={img} className='w-full mx-auto h-72 object-contain rounded' />
+						<img src={postImage} className='w-full mx-auto h-72 object-contain rounded' />
 					</div>
 				)}
 
