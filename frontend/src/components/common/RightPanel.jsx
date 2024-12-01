@@ -5,7 +5,7 @@ import useFollow from "../../hooks/useFollow";
 import LoadingSpinner from "./LoadingSpinner";
 
 const RightPanel = () => {
-	const {data:suggestedUser, isLoading, error} = useQuery({
+	const {data:suggestedUser, isLoading} = useQuery({
 		queryKey: ["suggestedUser"],
 		queryFn: async ()=>{
 			try {
