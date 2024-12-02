@@ -6,7 +6,6 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import toast from "react-hot-toast";
-import { query } from "express";
 
 
 const NotificationPage = () => {
