@@ -23,26 +23,6 @@ const SignupPage = () => {
 		mutationFn: async ({ email, username, fullName, password }) => {
 			try {
 
-				// await fetch('/api/auth/signup', {
-				// 	method: 'POST',
-				// 	headers: {
-				// 		'Content-Type': 'application/json',
-				// 	},
-				// 	body: JSON.stringify({
-				// 		email,
-				// 		username,
-				// 		fullName,
-				// 		password,
-				// 	})
-				// })
-				// .then((res)=> {
-				// 	return res.json()
-				// })
-				// .catch((data)=>{
-				// 	toast.error(data.message);
-				// })
-				// .then((data)=>{console.log(data)})
-
 				const res = await fetch('/api/auth/signup', {
 					method: 'POST',
 					headers: {
@@ -59,18 +39,16 @@ const SignupPage = () => {
 				const data = await res.json();
 
 				if (!res.ok) {
-					toast.error(data.message);
-				} else {
-					console.log(data);
-					toast.success("Account created successfully");
-					return data
+					throw new Error(data.message);
 				}
 
 
+				toast.success("Account created successfully");
+				return data
 
 			} catch (error) {
-				console.error(error);
 				toast.error(error.message);
+				throw new Error(error);
 			}
 		},
 	});
