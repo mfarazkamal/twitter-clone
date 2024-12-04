@@ -4,6 +4,7 @@ import userRoutes from './routes/user.route.js'
 import postsRoutes from './routes/posts.route.js'
 import notificationsRoutes from './routes/notifications.route.js'
 import dotenv from 'dotenv'
+import path from 'path'
 import connectDB from './db/connectDB.js'
 import cookieParser from 'cookie-parser'
 import { v2 as cloudinary } from 'cloudinary';
@@ -25,12 +26,21 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
+const __dirname = path.resolve();
 
 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/posts', postsRoutes)
 app.use('/api/notifications', notificationsRoutes)
+
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static(path.join(__dirname, '/frontend/dist')))
+
+    app.get('*', (req, res)=>{
+        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+    })
+}
 
 
 app.listen(PORT, ()=>{
